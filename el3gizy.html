@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شركة العجيزي للمقاولات والتطوير العقاري</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- الألوان الأساسية --- */
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --gold: #d4af37;
+            --gold-hover: #b59020;
+            --text: #ffffff;
+            --gray: #888;
+        }
+
+        * { box-sizing: border-box; outline: none; scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            margin: 0; padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- الهيدر --- */
+        header {
+            background: rgba(30, 30, 30, 0.98);
+            border-bottom: 2px solid var(--gold);
+            padding: 10px 30px;
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .logo-img { height: 50px; border-radius: 5px; }
+        .logo-text-container { display: flex; flex-direction: column; }
+        .logo-main { font-size: 1.2rem; color: var(--gold); font-weight: 800; line-height: 1; }
+        .logo-sub { font-size: 0.75rem; color: #fff; }
+
+        .nav-container { display: flex; align-items: center; gap: 30px; }
+
+        nav ul {
+            list-style: none; padding: 0; margin: 0; display: flex; gap: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text); text-decoration: none; font-weight: 600; transition: 0.3s;
+            cursor: pointer; position: relative; font-size: 1rem;
+        }
+        nav ul li a:hover, nav ul li a.active-link { color: var(--gold); }
+        nav ul li a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; right: 0;
+            background: var(--gold); transition: 0.3s;
+        }
+        nav ul li a:hover::after { width: 100%; }
+
+        /* أيقونات الهيدر */
+        .header-social { display: flex; gap: 10px; margin-right: 20px; border-right: 1px solid #444; padding-right: 20px; }
+        .header-social a {
+            color: #fff; font-size: 1.1rem; transition: 0.3s;
+        }
+        .header-social a:hover { color: var(--gold); transform: translateY(-3px); }
+
+        /* أيقونة الهامبرغر - مخفية في الديسك توب */
+        .menu-toggle {
+            display: none; 
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* قائمة الموبايل - مخفية في الديسك توب */
+        .mobile-nav {
+            position: absolute;
+            top: 72px; 
+            left: 0;
+            width: 100%;
+            background: var(--bg-dark);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.7);
+            display: none; 
+            padding: 10px 0;
+            z-index: 999;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0; margin: 0;
+            text-align: center;
+        }
+
+        .mobile-nav ul li a {
+            display: block;
+            padding: 15px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #222;
+            transition: background 0.3s;
+        }
+
+        .mobile-nav ul li a:hover, .mobile-nav ul li a.active-link {
+            background: #1e1e1e;
+            color: var(--gold);
+        }
+        
+        /* أيقونات التواصل في قائمة الموبايل */
+        .mobile-nav .header-social {
+            display: flex;
+            justify-content: center;
+            border: none;
+            padding: 15px 0;
+            border-top: 1px solid #333;
+            margin: 0; padding-right: 0; 
+        }
+        .mobile-nav .header-social a { color: var(--gold); } 
+
+        @media (max-width: 900px) {
+            .nav-container { display: none; } /* إخفاء قائمة الديسك توب */
+            .menu-toggle { display: block; } /* إظهار أيقونة الهامبرغر */
+            header { padding: 10px 20px; }
+            .hero-content { flex-direction: column; } /* لترتيب العناصر فوق بعض في الموبايل */
+            .hero-form-container { max-width: 100%; }
+        }
+
+        /* --- نظام الصفحات --- */
+        .page-section { display: none; animation: fadeIn 0.6s ease; }
+        .page-section.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- الهيرو (الواجهة الرئيسية) --- */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), var(--bg-dark)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 20px; text-align: center;
+        }
+
+        .hero-content {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; align-items: center; width: 100%; max-width: 1200px;
+        }
+
+        /* فورم التسجيل */
+        .hero-form-container {
+            background: rgba(30, 30, 30, 0.9);
+            border: 2px solid var(--gold); padding: 30px; border-radius: 20px;
+            width: 100%; max-width: 450px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+        
+        .hero-form-container h2 { color: var(--gold); margin: 0 0 20px 0; font-size: 1.5rem; }
+
+        .form-group { margin-bottom: 12px; text-align: right; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid #555;
+            color: white; border-radius: 8px; font-family: 'Cairo', sans-serif;
+        }
+        .form-group input:focus { border-color: var(--gold); }
+
+        .submit-btn {
+            width: 100%; padding: 12px; background: var(--gold); border: none; color: #000;
+            font-weight: 700; cursor: pointer; border-radius: 8px; font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: var(--gold-hover); }
+
+        /* أيقونات التواصل تحت الفورم */
+        .form-social { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        .form-social a {
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); text-decoration: none; transition: 0.3s;
+        }
+        .form-social a:hover { background: var(--gold); color: #000; }
+
+        /* --- قسم الرؤية والرسالة --- */
+        .vm-section { padding: 80px 20px; background: var(--bg-dark); text-align: center; }
+        .vm-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 40px auto 0;
+        }
+        .vm-card {
+            background: var(--bg-card); padding: 30px; border-radius: 15px; border-bottom: 3px solid var(--gold);
+            transition: 0.3s;
+        }
+        .vm-card:hover { transform: translateY(-10px); background: #252525; }
+        .vm-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; }
+        .vm-card h3 { color: #fff; margin-bottom: 15px; }
+        .vm-card p { color: #ccc; font-size: 0.95rem; }
+
+        /* --- الأقسام العامة (من نحن / أعمالنا) --- */
+        .content-section { padding: 60px 20px; border-top: 1px solid #333; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-size: 2rem; color: var(--gold); display: inline-block; border-bottom: 2px solid #fff; padding-bottom: 10px; }
+
+        /* --- معرض الصور --- */
+        .tabs-container { text-align: center; margin-bottom: 30px; }
+        .main-tabs { display: flex; justify-content: center; flex-wrap: wrap; }
+        .main-tab-btn {
+            background: transparent; border: 2px solid var(--gold); color: #fff;
+            padding: 8px 25px; margin: 5px; border-radius: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .main-tab-btn.active, .main-tab-btn:hover { background: var(--gold); color: #000; }
+        
+        .sub-tabs { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .sub-tab-btn { cursor: pointer; color: #888; padding: 5px 10px; border-bottom: 2px solid transparent; }
+        .sub-tab-btn.active { color: var(--gold); border-color: var(--gold); }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px; max-width: 1200px; margin: 0 auto;
+        }
+        .gallery-item { height: 220px; overflow: hidden; border-radius: 10px; position: relative; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* --- الفوتر --- */
+        footer { background: #000; padding: 20px; text-align: center; color: #666; font-size: 0.9rem; margin-top: 50px; }
+
+        /* إشعار */
+        #notification {
+            position: fixed; bottom: 30px; right: 30px; background: var(--gold); color: black;
+            padding: 15px 30px; border-radius: 8px; transform: translateY(200%); transition: 0.4s; z-index: 3000;
+        }
+        
+        /* تصميم النجوم */
+        .stars-container { color: var(--gold); font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="showPage('home')">
+<img src="https://i.ibb.co/WNsfswzG/photo-removebg-preview.png" alt="شعار" class="logo-img" style="width: 200px; height: auto;">            <div class="logo-text-container">
+                <span class="logo-main">العجيزي للمقاولات</span>
+                <span class="logo-sub">العامة والتشطيبات</span>
+            </div>
+        </div>
+        
+        <div class="nav-container">
+            <div class="header-social">
+                <a href="https://wa.me/201080003469" target="_blank" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/share/1A8TeuPXts/?mibextid=wwXIfr" target="_blank" title="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/el3gizy.company/" target="_blank" title="انستجرام"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/El3gizycompany" target="_blank" title="تويتر"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://www.tiktok.com/@el3gizy.company" target="_blank" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a onclick="showPage('home')" id="nav-home" class="active-link">الرئيسية</a></li>
+                    <li><a onclick="showPage('about')" id="nav-about">من نحن</a></li>
+                    <li><a onclick="showPage('projects')" id="nav-projects">سابقة أعمالنا</a></li>
+                    <li><a onclick="showPage('contact')" id="nav-contact">تواصل معنا</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a onclick="showPage('home');">الرئيسية</a></li>
+            <li><a onclick="showPage('about');">من نحن</a></li>
+            <li><a onclick="showPage('projects');">سابقة أعمالنا</a></li>
+            <li><a onclick="showPage('contact');">تواصل معنا</a></li>
+        </ul>
+        <div class="header-social">
+            <a href="https://wa.me/201080003469" target="_blank" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/share/1A8TeuPXts/?mibextid=wwXIfr" target="_blank" title="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/el3gizy.company/" target="_blank" title="انستجرام"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com/El3gizycompany" target="_blank" title="تويتر"><i class="fa-brands fa-twitter"></i></a>
+            <a href="https://www.tiktok.com/@el3gizy.company" target="_blank" title="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+    </div>
+
+
+    <div id="home" class="page-section active-page">
+        <section class="hero">
+            <div class="hero-content">
+                <div style="flex:1; min-width:300px; text-align:right;">
+                    <h1 style="font-size:3rem; color:var(--gold); margin-bottom:10px;">ابني حلمك معنا</h1>
+                    <p style="font-size:1.2rem; color:#ddd;">نحول الأفكار إلى واقع معماري متميز بأعلى معايير الجودة.</p>
+                </div>
+
+                <div class="hero-form-container">
+                    <h2>تسجيل بيانات العملاء</h2>
+                    <form id="clientFormHome" onsubmit="submitToGoogleSheet(event, 'clientFormHome')">
+                        <div class="form-group">
+                            <input type="text" name="name" required placeholder="الاسم بالكامل">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="phone" required placeholder="رقم الهاتف (010xxxxxxx)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="address" required placeholder="العنوان">
+                        </div>
+                        <div class="form-group">
+                            <textarea name="note" rows="3" placeholder="تفاصيل الطلب..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">إرسال البيانات <i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                    
+                    <div class="form-social">
+                        <a href="https://wa.me/201080003469" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/share/1A8TeuPXts/?mibextid=wwXIfr" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/el3gizy.company/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="tel:01080003469"><i class="fa-solid fa-phone"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="vm-section">
+            <div class="section-header">
+                <h2>هويتنا المؤسسية</h2>
+            </div>
+            <div class="vm-grid">
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="fa-solid fa-eye"></i></div>
+                    <h3>رؤيتنا</h3>
+                    <p>أن نكون الخيار الأول في مجال المقاولات في مصر من خلال تقديم حلول مبتكرة وتصاميم عصرية تناسب كافة الأذواق.</p>
+                </div>
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>رسالتنا</h3>
+                    <p>تحقيق أعلى معايير الجودة والالتزام بالمواعيد، وبناء علاقات طويلة الأمد مع عملائنا مبنية على الثقة والشفافية.</p>
+                </div>
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3>أهدافنا</h3>
+                    <p>التوسع في المشاريع القومية والخاصة، وتطوير كوادرنا الهندسية والفنية لمواكبة أحدث تكنولوجيا البناء العالمية.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" style="background: #181818;">
+            <div class="section-header">
+                <h2>من نحن</h2>
+            </div>
+            <div style="max-width: 900px; margin: 0 auto; text-align: center; color: #ccc; font-size: 1.1rem;">
+                <p>نحن شركة العجيزي للمقاولات العامة والتشطيبات، نمتلك خبرة واسعة في تنفيذ كبرى المشاريع السكنية والتجارية. نتميز بفريق عمل متكامل من المهندسين والفنيين المحترفين لضمان تنفيذ رؤيتكم بدقة متناهية.</p>
+                <br>
+                <button onclick="showPage('about')" class="submit-btn" style="width: 200px; margin: 0 auto;">اقرأ المزيد عنا</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <h2>مقتطفات من أعمالنا</h2>
+            </div>
+            <div id="home-gallery-placeholder">
+                </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showPage('projects')" class="submit-btn" style="width: 200px; display:inline-block;">عرض كل الأعمال</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="about" class="page-section">
+        <section class="content-section" style="min-height: 80vh; padding-top: 100px;">
+            <div class="section-header"><h2>قصتنا ورؤيتنا</h2></div>
+            <div style="max-width: 1000px; margin: 0 auto; background: var(--bg-card); padding: 50px; border-radius: 20px;">
+                <h3 style="color:var(--gold);">شركة العجيزي للمقاولات</h3>
+                <p style="color:#ddd; line-height: 2; margin-top: 20px;">
+                    تأسست الشركة بهدف إحداث طفرة في عالم المقاولات والتشطيبات. نحن لا نقوم فقط بالبناء، بل نخلق بيئة حياة متكاملة. 
+                    خدماتنا تشمل:<br>
+                    - التصميم المعماري والإنشائي.<br>
+                    - التشطيبات الداخلية والديكور.<br>
+                    - الواجهات الخارجية واللاند سكيب.<br>
+                    - الإشراف الهندسي المتكامل.
+                </p>
+                <div class="vm-grid" style="margin-top: 50px;">
+                    <div class="vm-card" style="padding: 20px;">
+                        <i class="fa-solid fa-check-circle" style="color:var(--gold); font-size:2rem;"></i>
+                        <h4>التزام تام</h4>
+                    </div>
+                    <div class="vm-card" style="padding: 20px;">
+                        <div class="stars-container">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <h4>جودة عالية</h4>
+                    </div>
+                    <div class="vm-card" style="padding: 20px;">
+                        <i class="fa-solid fa-clock" style="color:var(--gold); font-size:2rem;"></i>
+                        <h4>سرعة تنفيذ</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="projects" class="page-section">
+        <section class="content-section" style="padding-top: 100px;">
+            <div class="section-header"><h2>معرض مشاريعنا</h2></div>
+            
+            <div class="tabs-container">
+                <div class="main-tabs">
+                    <button class="main-tab-btn active" onclick="switchMainTab('interior')">واجهات داخلية</button>
+                    <button class="main-tab-btn" onclick="switchMainTab('exterior')">واجهات خارجية</button>
+                </div>
+                <div class="sub-tabs" id="subTabsContainer"></div>
+            </div>
+
+            <div class="gallery-grid" id="galleryContainer"></div>
+        </section>
+    </div>
+
+    <div id="contact" class="page-section">
+        <section class="content-section" style="min-height: 80vh; padding-top: 100px; text-align: center;">
+            <div class="section-header"><h2>تواصل معنا</h2></div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 50px;">
+                
+                <div style="background: var(--bg-card); padding: 40px; border-radius: 15px; min-width: 300px;">
+                    <i class="fa-solid fa-phone" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;"></i>
+                    <h3>اتصل بنا</h3>
+                    <p dir="ltr" style="color: #fff;">01080003469</p>
+                </div>
+
+                <div style="background: var(--bg-card); padding: 40px; border-radius: 15px; min-width: 300px;">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;"></i>
+                    <h3>واتساب</h3>
+                    <p><a href="https://wa.me/201080003469" style="color: #fff; text-decoration: none;">اضغط للمراسلة</a></p>
+                </div>
+
+                <div style="background: var(--bg-card); padding: 40px; border-radius: 15px; min-width: 300px;">
+                    <i class="fa-solid fa-location-dot" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px;"></i>
+                    <h3>مقر الشركة</h3>
+                    <p style="color: #fff;">مصر، القاهرة</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © 2025 شركة العجيزي للمقاولات العامة والتشطيبات</p>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script>
+        // هذا هو رابط سكربت جوجل شيت الخاص بك (تم الاحتفاظ به كما طلب)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwvltKp9C8u_AptUDfwDtXRAg6ZYfWvJOWycAabiHm9fAO0EN4UoY3x0KFS2bvT8-c/exec"; 
+
+        // --- التحكم في قائمة الموبايل ---
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.style.display = mobileNav.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // --- التحكم في التنقل ---
+        function showPage(pageId) {
+            // إخفاء الكل وتحديث الروابط النشطة
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
+            document.querySelectorAll('nav ul li a').forEach(link => link.classList.remove('active-link'));
+            
+            // إغلاق قائمة الموبايل عند الضغط على رابط
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav && mobileNav.style.display === 'block') {
+                mobileNav.style.display = 'none';
+            }
+
+            document.getElementById(pageId).classList.add('active-page');
+            const navLink = document.getElementById('nav-' + pageId);
+            if(navLink) navLink.classList.add('active-link');
+
+            // تأكد من تحميل بيانات المعرض عند الحاجة
+            if(pageId === 'projects' || pageId === 'home') {
+                if(!galleryLoaded) initGallery();
+            }
+
+            window.scrollTo(0,0);
+        }
+
+        // --- منطق الجاليري (المعرض) ---
+        let galleryData = {};
+        let galleryLoaded = false;
+        const categories = {
+            interior: { label: "واجهات داخلية", subs: { kitchens: "مطابخ", living: "صالة ومعيشة", bedrooms: "غرف نوم", offices: "مكاتب" } },
+            exterior: { label: "واجهات خارجية", subs: { houses: "تصميم بيوت", villas: "فلل وقصور", compounds: "كمبوندات" } }
+        };
+        let currentMainTab = 'interior';
+        let currentSubTab = 'kitchens';
+
+        function initGallery() {
+            galleryLoaded = true;
+            fetchImages();
+        }
+
+        async function fetchImages() {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const data = await response.json();
+                if(data && (data.interior || data.exterior)) galleryData = data;
+                switchMainTab(currentMainTab); // تحديث العرض بعد الجلب
+            } catch (e) { 
+                console.error("خطأ في جلب الصور:", e); 
+                const container = document.getElementById('galleryContainer');
+                if(container) container.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#dc3545; font-size:1.1rem; padding: 50px;">خطأ في الاتصال بسكربت جوجل شيت. يرجى مراجعة الرابط.</p>';
+            }
+        }
+
+        function switchMainTab(main) {
+            currentMainTab = main;
+            // تحديث أزرار التبويبات الرئيسية
+            document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.querySelector(`.main-tab-btn[onclick*="${main}"]`);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            // تحديث التبويبات الفرعية
+            const subContainer = document.getElementById('subTabsContainer');
+            if(subContainer) {
+                subContainer.innerHTML = '';
+                const subs = categories[main].subs;
+                let first = null;
+                for(const [key, label] of Object.entries(subs)) {
+                    if(!first) first = key;
+                    const btn = document.createElement('div');
+                    btn.className = `sub-tab-btn ${key===first?'active':''}`;
+                    btn.innerText = label;
+                    btn.onclick = () => {
+                        currentSubTab = key;
+                        document.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+                        btn.classList.add('active');
+                        renderGallery();
+                    };
+                    subContainer.appendChild(btn);
+                }
+                currentSubTab = first;
+            }
+            renderGallery();
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('galleryContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const images = (galleryData[currentMainTab] && galleryData[currentMainTab][currentSubTab]) ? galleryData[currentMainTab][currentSubTab] : [];
+            
+            if(images.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:var(--gray); font-size:1.1rem; padding: 50px;">لا توجد صور حالياً في هذا القسم. يرجى إضافة الصور إلى جدول بيانات جوجل (Google Sheet) لكي تظهر هنا.</p>';
+                
+            } else {
+                images.forEach(url => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `<img src="${url}" loading="lazy" alt="مشروع العجيزي" onerror="this.parentElement.style.display='none'">`;
+                    container.appendChild(item);
+                });
+            }
+
+            // نسخ نسخة مصغرة للصفحة الرئيسية
+            const homePlace = document.getElementById('home-gallery-placeholder');
+            if(homePlace) {
+                homePlace.innerHTML = '';
+                const tempContainer = document.createElement('div');
+                images.slice(0, 4).forEach(url => { // عرض أول 4 صور فقط
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `<img src="${url}" loading="lazy" alt="مشروع العجيزي" onerror="this.parentElement.style.display='none'">`;
+                    tempContainer.appendChild(item);
+                });
+
+                if (tempContainer.children.length === 0) {
+                     homePlace.innerHTML = '<p style="text-align:center; color:var(--gray);">لا توجد صور لعرضها في الرئيسية.</p>';
+                } else {
+                    const clone = tempContainer;
+                    clone.style.display = "grid";
+                    clone.style.gap = "15px";
+                    clone.style.gridTemplateColumns = "repeat(auto-fit, minmax(200px, 1fr))";
+                    homePlace.appendChild(clone);
+                }
+            }
+        }
+
+        // --- إرسال النموذج ---
+        function submitToGoogleSheet(e, formId) {
+            e.preventDefault();
+            const form = document.getElementById(formId);
+            const btn = form.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.disabled = true;
+
+            const formData = new FormData(form);
+            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' })
+            .then(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> تم بنجاح';
+                btn.style.background = "#28a745";
+                form.reset();
+                showNotification("تم استلام طلبك بنجاح");
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    btn.style.background = "var(--gold)";
+                }, 3000);
+            })
+            .catch(() => {
+                btn.innerHTML = 'خطأ! حاول مرة أخرى';
+                btn.style.background = "#dc3545";
+                btn.disabled = false;
+                showNotification("حدث خطأ في الإرسال");
+                setTimeout(() => { btn.innerHTML = originalText; btn.style.background = "var(--gold)"; }, 3000);
+            });
+        }
+
+        function showNotification(msg) {
+            const n = document.getElementById('notification');
+            n.innerText = msg; n.style.transform = 'translateY(0)';
+            setTimeout(() => n.style.transform = 'translateY(200%)', 3000);
+        }
+
+        // تشغيل مبدئي
+        initGallery();
+    </script>
+</body>
+</html>
